@@ -101,7 +101,7 @@ def visiting_sub():
     while runningsd:
         for posts in subreddit.top(time_filter="week"):
             Console.print(f"\n[blue_violet]Next Post...[/blue_violet]")
-            time.sleep(1.2)
+            time.sleep(1)
             Console.clear()
             system("cls")
             name = pyfiglet.figlet_format(subreddit.display_name)

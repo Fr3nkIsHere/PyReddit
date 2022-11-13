@@ -1,8 +1,7 @@
 '''
 *****************************************
-*            Sotware in Beta            *
-*     Usarlo solo a Vostro Rischio e    *
-*               Pericolo                *
+*            Beta Software              *
+*         Use only at your risk         *
 *                Fr3nk                  *
 ***************************************** 
 '''
@@ -100,7 +99,7 @@ def random_place():
         for post in subreddit.hot(limit=1):
             Console.print(f"[blue3]Title:[/blue3] {post.title} \n[deep_sky_blue3]Description: [/deep_sky_blue3]")
             Console.print(Markdown(post.selftext))
-            if post.url.endswith(".png") or post.url.endswith(".jpg"):
+            if post.url.endswith(".png") or post.url.endswith(".jpg") or post.url.endswith(".gif"):
                 Console.print(f"\n[green_yellow]Image:[/green_yellow]")
                 f = open('last_pic.jpg','wb')
                 response = requests.get(post.url)
@@ -136,7 +135,7 @@ def visiting_sub():
             Console.print(f"[dark_orange3]{name}[/dark_orange3]\n[salmon1]Description: {subreddit.title}[/salmon1]\n\n",markup=True)
             Console.print(f"[blue3]Title:[/blue3] {posts.title} \n[deep_sky_blue3]Description: [/deep_sky_blue3]")
             Console.print(Markdown(posts.selftext))
-            if posts.url.endswith(".png") or posts.url.endswith(".jpg"):
+            if posts.url.endswith(".png") or posts.url.endswith(".jpg") or post.url.endswith(".gif"):
                 Console.print(f"\n[green_yellow]Image:[/green_yellow]")
                 f = open('last_pic.jpg','wb')
                 response = requests.get(posts.url)

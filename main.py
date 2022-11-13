@@ -126,7 +126,7 @@ def visiting_sub():
             elif qui.lower() == ":n": #Next post
                 continue
             elif qui.lower() == ":r": #Refresh random subs (not working lol)
-                runningsd = False
+                main()
 
 
 #help
@@ -136,6 +136,7 @@ def help():
     Console.print(f"[dark_orange3]{PyReddit}[/dark_orange3]\n\n",markup=True)
     Console.print(":q Exit from the subreddit/return to main menù")
     Console.print(":n In the same subreddit go to the next post (of the week)")
+    Console.print(":r Everything you did, this command bring you in the main menu")
     Console.print("Enter --> Change Random Subreddit")
     Console.input("")
 

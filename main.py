@@ -10,7 +10,7 @@
 
 
 import json
-import requests, praw, pyfiglet, time, random, ascii_magic
+import requests, praw, pyfiglet, time, random, ascii_magic, os
 from rich import console
 from rich.markdown import Markdown
 import linecache
@@ -34,7 +34,7 @@ def get_started():
     time.sleep(1)
     Console.print("[spring_green3]Creating random subs list...[/spring_green3]",end=" ")
     file = open("random.txt", 'w')
-    file.write("memes\nanime\nanimememes\nsports\nfishing\neyebleach\nformula1\nnba\nFoodPorn\nfunny\nspace\nworldnews\ntechnology\ncringepics\nbetterCallSaul\nshitposting")
+    file.write("memes\nanime\nanimememes\nsports\nfishing\neyebleach\nformula1\nnba\nFoodPorn\nfunny\nspace\nworldnews\ntechnology\ncringepics\nbetterCallSaul\nshitposting\npics\nPorn\nFreeKarma4U\nhentai\nPEDsR\nFiftyFifty")
     file.close()
     Console.print("[spring_green3]✓[/spring_green3]")
     time.sleep(1)
@@ -45,7 +45,7 @@ def get_started():
         Console.print("[spring_green3]✓[/spring_green3]")
     except:
         Console.print("[red1]X[/red1]")
-        Console.print("[bright_red]Error Connecting to the internet, Please Try Later. [\right_red]")
+        Console.print("[bright_red]Error Connecting to the internet, Please Try Later. [/right_red]")
         time.sleep(1)
         exit()
     time.sleep(0.3)
@@ -65,13 +65,37 @@ def get_started():
 def random_place():
     global reddit, subreddit
     runningd = True
-    runningsd  = True
+    Console.print("[spring_green3]Connection with Reddit... ✓[/spring_green3]")
+    time.sleep(0.5)
+    Console.print("[spring_green3]Checking Setings...[/spring_green3]",end=" ")
+    time.sleep(0.5)
+    
+    if os.path.exists('settings.cfg') == False:
+        Console.print("[red1]X[/red1]")
+        Console.print("[bright_red]Error Checking Settings, Please run Settings from the main menu.[/bright_red]")
+        nsfw = False
+    else:
+        Console.print("[spring_green3]✓[/spring_green3]")
+        NsfwSetting = linecache.getline('settings.cfg', 1)
+        NsfwCheck = NsfwSetting.replace("NSFW= ", "")
+        if NsfwCheck.__contains__("1"):
+            nsfw = True
+        else:
+            nsfw = False
+    time.sleep(0.5)
+            
     while runningd:
         Console.clear()
         system("cls")
-        subredditname = linecache.getline('random.txt', random.randint(1,16))
+        if nsfw:
+            subredditname = linecache.getline('random.txt', random.randint(1,22))
+        else:
+            subredditname = linecache.getline('random.txt', random.randint(1,17))
+        
         subreddit = reddit.subreddit(subredditname)
         name = pyfiglet.figlet_format(subreddit.display_name)
+        
+        
         Console.print(f"[dark_orange3]{name}[/dark_orange3]\n[salmon1]Description: {subreddit.title}[/salmon1]\n\n",markup=True)
         for post in subreddit.hot(limit=1):
             Console.print(f"[blue3]Title:[/blue3] {post.title} \n[deep_sky_blue3]Description: [/deep_sky_blue3]")
@@ -87,6 +111,8 @@ def random_place():
                 Console.print(f"\n[purple4]Url:[/purple4] {post.url}")
             else:
                 Console.print(f"\n[purple4]Url:[/purple4] {post.url}")
+        
+        
         qui = Console.input("")
         if qui.lower() == ":q": #Quit
             runningd = False
@@ -104,6 +130,8 @@ def visiting_sub():
             time.sleep(1)
             Console.clear()
             system("cls")
+            
+            
             name = pyfiglet.figlet_format(subreddit.display_name)
             Console.print(f"[dark_orange3]{name}[/dark_orange3]\n[salmon1]Description: {subreddit.title}[/salmon1]\n\n",markup=True)
             Console.print(f"[blue3]Title:[/blue3] {posts.title} \n[deep_sky_blue3]Description: [/deep_sky_blue3]")
@@ -119,6 +147,8 @@ def visiting_sub():
                 Console.print(f"\n[purple4]Url:[/purple4] {posts.url}")
             else:
                 Console.print(f"\n[purple4]Url:[/purple4] {posts.url}")
+            
+            
             qui = Console.input("")
             if qui.lower() == ":q": #Quit random
                 runningsd = False
@@ -167,9 +197,9 @@ def settings():
     Console.print("[bright_red]Saving Settings...[/bright_red]")
     setting = open("settings.cfg","w")
     if sex.lower() == "y":
-        setting.writelines(f"NSFW = 1")
+        setting.writelines(f"NSFW= 1")
     else:
-        setting.writelines(f"NSFW = 0")
+        setting.writelines(f"NSFW= 0")
     setting.close()
     time.sleep(0.5)
     Console.print("[spring_green2]Done![/spring_green2]")

@@ -6,15 +6,20 @@
 ***************************************** 
 '''
 
+from os import system
 
+file = open("requirements.txt", 'w')
+file.write("rich\nrequests\npraw\npyfiglet\nascii_magic\nrequests")
+file.close()
+system("pip install -r requirements.txt")
+    
 
-import json
-import requests, praw, pyfiglet, time, random, ascii_magic, os
+import json, time, os, random
+import requests, praw, pyfiglet, ascii_magic
 from rich import console
 from rich.markdown import Markdown
 import linecache
-from os import system
-import base64
+
 
 reddit = None
 Console = console.Console()
@@ -25,10 +30,7 @@ running = True
 def get_started():
     global reddit
     time.sleep(0.3)
-    file = open("requirements.txt", 'w')
-    file.write("rich\nrequests\npraw\npyfiglet\nascii_magic")
-    file.close()
-    system("pip install -r requirements.txt")
+    
     Console.print("[spring_green3]Installing Required Libraries...✓[/spring_green3]")
     time.sleep(1)
     Console.print("[spring_green3]Creating random subs list...[/spring_green3]",end=" ")

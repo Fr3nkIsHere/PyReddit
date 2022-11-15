@@ -19,6 +19,7 @@ import requests, praw, pyfiglet, ascii_magic
 from rich import console
 from rich.markdown import Markdown
 import linecache
+import search
 
 
 reddit = None
@@ -218,9 +219,9 @@ def main():
         Console.print(f"[dark_orange3]{PyReddit}[/dark_orange3]\n\n",markup=True)
         Console.print("[orange_red1]0) Exit[/orange_red1]")
         Console.print("[red1]1) Start Navigating Randomly[/red1]")
-        Console.print("[bright_red]2) Help[/bright_red]")
-        #Console.print("[deep_pink4]2) See some Subreddit[/deep_pink4]")
-        Console.print("[bright_red]3) Settings[/bright_red]")
+        Console.print("[deep_pink4]2) Search some Subreddits[/deep_pink4]")
+        Console.print("[bright_red]3) Help[/bright_red]")
+        Console.print("[bright_red]4) Settings[/bright_red]")
         Console.print("[orange1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/orange1]")
         sel = Console.input("Select: ")
         Console.bell()
@@ -233,8 +234,25 @@ def main():
             case 1:
                 random_place()
             case 2:
-                help()
+                Console.print("[spring_green3]Checking Setings...[/spring_green3]",end=" ")
+                time.sleep(0.5)
+                if os.path.exists('settings.cfg') == False:
+                    Console.print("[red1]X[/red1]")
+                    Console.print("[bright_red]Error Checking Settings, Please run Settings from the main menu.[/bright_red]")
+                    nsfw = False
+                else:
+                    Console.print("[spring_green3]✓[/spring_green3]")
+                    NsfwSetting = linecache.getline('settings.cfg', 1)
+                    NsfwCheck = NsfwSetting.replace("NSFW= ", "")
+                    if NsfwCheck.__contains__("1"):
+                        nsfw = True
+                    else:
+                        nsfw = False
+                time.sleep(0.5)
+                search.search(nsfw)
             case 3:
+                help()
+            case 4:
                 settings()
             
 

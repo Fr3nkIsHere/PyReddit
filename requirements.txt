@@ -3,4 +3,3 @@ requests
 praw
 pyfiglet
 ascii_magic
-requests

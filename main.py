@@ -17,7 +17,7 @@ try:
     import requests, praw, pyfiglet, ascii_magic
 except ModuleNotFoundError:
     file = open("requirements.txt", 'w')
-    file.write("rich\nrequests\npraw\npyfiglet\nascii_magic\nrequests")
+    file.write("rich\nrequests\npraw\npyfiglet\nascii_magic")
     file.close()
     system("pip install -r requirements.txt")
     import requests, praw, pyfiglet, ascii_magic

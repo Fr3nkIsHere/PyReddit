@@ -1,9 +1,12 @@
+
+
 '''
 *****************************************
 *            Beta Software              *
 *         Use only at your risk         *
 *                Fr3nk                  *
 ***************************************** 
+Search Engine
 '''
       
 
@@ -12,7 +15,7 @@ import json, time, os, random
 import requests, praw, pyfiglet, ascii_magic
 from rich import console
 from rich.markdown import Markdown
-import linecache
+import linecache, parse_sub
 
 reddit= praw.Reddit(client_id="dpCFcO5NCMP4Xa7ZqQP6rA",         
                                 client_secret="eHOQOtGHXfg8xLX9drgIlhQxi5dnHQ",     

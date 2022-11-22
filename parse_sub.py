@@ -44,6 +44,10 @@ class Subreddit:
                 Console.print(f"\n[blue_violet]Next Subreddit...[/blue_violet]")
                 time.sleep(1)
                 break
+            else:
+                Console.print(f"\n[blue_violet]There's a time and place for everything, but not now! Next Post...[/blue_violet]")
+                time.sleep(1)
+                continue 
                    
 
     def out(title, desc, link, subname, subdesc):

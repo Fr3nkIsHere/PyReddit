@@ -3,3 +3,5 @@ requests
 praw
 pyfiglet
 ascii_magic
+redvid
+opencv-python

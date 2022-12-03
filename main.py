@@ -14,13 +14,13 @@ from os import system
 
 
 try: 
-    import requests, praw, pyfiglet, ascii_magic
+    import requests, praw, pyfiglet, ascii_magic, redvid
 except ModuleNotFoundError:
     file = open("requirements.txt", 'w')
-    file.write("rich\nrequests\npraw\npyfiglet\nascii_magic")
+    file.write("rich\nrequests\npraw\npyfiglet\nascii_magic\nredvid\nopencv-python")
     file.close()
     system("pip install -r requirements.txt")
-    import requests, praw, pyfiglet, ascii_magic
+    import requests, praw, pyfiglet, ascii_magic, redvid
     
 
 import json, time, os, random
@@ -28,6 +28,7 @@ from rich import console
 from rich.markdown import Markdown
 import linecache
 import search, parse_sub
+import sys
 
 
 reddit = None
@@ -39,7 +40,7 @@ running = True
 def get_started():
     global reddit
     time.sleep(0.3)
-    
+    sys.stdout.write("\x1b]2;PyReddit - Starting...\x07")
     Console.print("[spring_green3]Installing Required Libraries...✓[/spring_green3]")
     time.sleep(1)
     Console.print("[spring_green3]Testing Internet Connection...[/spring_green3]",end=" ")
@@ -55,7 +56,7 @@ def get_started():
     time.sleep(0.3)
     Console.print("[spring_green3]Connection with Reddit... ✓[/spring_green3]")
     time.sleep(0.3)
-    Console.print("[spring_green3]Starting PyReddit 0.1... [/spring_green3]")
+    Console.print("[spring_green3]Starting PyReddit 0.3... [/spring_green3]")
     time.sleep(3)
 
 
@@ -75,35 +76,60 @@ def random_place():
         nsfw = False
     else:
         Console.print("[spring_green3]✓[/spring_green3]")
+
         NsfwSetting = linecache.getline('settings.cfg', 1)
         NsfwCheck = NsfwSetting.replace("NSFW= ", "")
         if NsfwCheck.__contains__("1"):
             nsfw = True
         else:
             nsfw = False
+
+        VideoSetting = linecache.getline('settings.cfg', 2)
+        VideoCheck =VideoSetting.replace("VIDEO_PLAY= ", "")
+        if VideoCheck.__contains__("1"):
+            Video = True
+        else:
+            Video = False
+
+
     time.sleep(0.5)
     stop = False
     Console.clear()
+    
     while not stop:
         system("cls")
-        stop = parse_sub.Subreddit.get(nsfw)
-            
+        stop = parse_sub.Subreddit.get(nsfw, Video)
+
+
+#credits
+def credits():
+    sys.stdout.write("\x1b]2;PyReddit - Credits\x07")
+    system("cls")
+    PyReddit = pyfiglet.figlet_format("Credits")
+    Console.print(f"[dark_orange3]{PyReddit}[/dark_orange3]\n\n",markup=True)   
+    Console.print("PyReddit Created By: Fr3nkIsHere") 
+    Console.input()  
 
 #help
 def help():
+    sys.stdout.write("\x1b]2;PyReddit - Help\x07")
     system("cls")
     PyReddit = pyfiglet.figlet_format("Help")
     Console.print(f"[dark_orange3]{PyReddit}[/dark_orange3]\n\n",markup=True)
-    Console.print(":q Exit from the subreddit/return to main menù")
-    Console.print(":n In the same subreddit go to the next post (of the week)")
-    Console.print(":r Everything you did, this command bring you in the main menu")
-    Console.print("Enter --> Change Random Subreddit")
+    Console.print("- Global Commands:")
+    Console.print(":q  return to main menu")
+    Console.print(":n/Enter Go to the next post")
+    Console.print("- Random Subreddit Commands:")
+    Console.print(":r Go to another Subredit")
+    Console.print("- Search Commands:")
+    Console.print(":s Search to another Subredit")
     Console.input("")
 
 #Settings 
 def settings():
     sett = 1
     sex = "n"
+    sys.stdout.write("\x1b]2;PyReddit - Settings\x07")
     while sett: #Global Settings
         Console.clear()
         system("cls")
@@ -122,14 +148,20 @@ def settings():
                 Settings = pyfiglet.figlet_format("Settings")
                 Console.print(f"[dark_orange3]{Settings}[/dark_orange3]\n\n",markup=True)
                 sex = Console.input("- Enable +18 (Default: N)[y/n]: ")
+                vid = Console.input("- Enable Video playback (Default: y)[y/n]: ")
     
     #Writing Settings
     Console.print("[bright_red]Saving Settings...[/bright_red]")
     setting = open("settings.cfg","w")
     if sex.lower() == "y":
-        setting.writelines(f"NSFW= 1")
+        setting.writelines(f"NSFW= 1\n")
     else:
-        setting.writelines(f"NSFW= 0")
+        setting.writelines(f"NSFW= 0\n")
+
+    if vid.lower() == "y":
+        setting.writelines(f"VIDEO_PLAY= 1")
+    else:
+        setting.writelines(f"VIDEO_PLAY= 0")
     setting.close()
     time.sleep(0.5)
     Console.print("[spring_green2]Done![/spring_green2]")
@@ -140,7 +172,8 @@ def settings():
 def main(): 
     global running
     get_started()
-    while running: 
+    while running:
+        sys.stdout.write("\x1b]2;PyReddit - Home\x07") 
         system("cls")
         PyReddit = pyfiglet.figlet_format("PyReddit")
         Console.print(f"[dark_orange3]{PyReddit}[/dark_orange3]\n\n",markup=True)
@@ -149,6 +182,7 @@ def main():
         Console.print("[deep_pink4]2) Search some Subreddits[/deep_pink4]")
         Console.print("[bright_red]3) Help[/bright_red]")
         Console.print("[bright_red]4) Settings[/bright_red]")
+        Console.print("[red3]5) Credits[/red3]")
         Console.print("[orange1]━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━[/orange1]")
         sel = Console.input("Select: ")
         Console.bell()
@@ -175,12 +209,22 @@ def main():
                         nsfw = True
                     else:
                         nsfw = False
+
+                    VideoSetting = linecache.getline('settings.cfg', 2)
+                    VideoCheck =VideoSetting.replace("VIDEO_PLAY= ", "")
+                    if VideoCheck.__contains__("1"):
+                        Video = True
+                    else:
+                        Video = False
+
                 time.sleep(0.5)
-                search.search(nsfw)
+                search.search(nsfw, Video)
             case '3':
                 help()
             case '4':
                 settings()
+            case '5':
+                credits()
             case _:
                 Console.bell()
                 system("cls")
@@ -192,3 +236,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

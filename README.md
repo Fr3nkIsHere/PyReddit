@@ -1,9 +1,11 @@
 # PyReddit
 
-A Reddit Client for terminals made in python (Very very Bad and poorly made)
+A Reddit Client written in Python
 
-Made with:
+## Credits to:
 
+- [OpenCv](https://github.com/opencv/opencv-python)
+- [Redvid](https://github.com/elmoiv/redvid)
 - [Rich](https://github.com/Textualize/rich)
 - [Praw](https://github.com/praw-dev/praw)
 - [Ascii-Magic](https://github.com/LeandroBarone/python-ascii_magic)

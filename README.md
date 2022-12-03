@@ -1,6 +1,6 @@
 # PyReddit
 
-A Reddit Client written in Python
+A Reddit Client written in Python for Terminals
 
 ## Credits to:
 

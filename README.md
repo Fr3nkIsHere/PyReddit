@@ -13,7 +13,7 @@ because I want to create something unique in my favorite language: [Python](http
 
 - Install Python 3.10 or above (to see your python version write into terminal) 
         ```python3 --version``` or ```python --version```
-- Download the last [Release](https://github.com/Fr3nkIsHere/PyReddit/releases) or clone this repository
+- Download the latest [Release](https://github.com/Fr3nkIsHere/PyReddit/releases) or clone this repository
 - To be able to use Multimedia feature you need to install [ffmpeg](https://ffmpeg.org/)  
 
 ## Credits to:

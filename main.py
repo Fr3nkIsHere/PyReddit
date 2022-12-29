@@ -100,8 +100,6 @@ def random_place():
 
         TimeSetting = linecache.getline('settings.cfg', 3)
         Time = TimeSetting.replace("POST_UPDATES= ", "")
-        print(Time, nsfw, Video)
-        time.sleep(1)
     
     stop = False
     Console.clear()

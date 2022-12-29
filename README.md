@@ -20,7 +20,7 @@ because I want to create something unique in my favorite language: [Python](http
 
 - <del>Search a Subreddit
 - Post time index (for now only globally)
-- <del>Better Video & Sound</del> _NB: yes, i know Video and audio desync_
+- <del>Better Video & Sound</del> _NB: yes, i know about video and audio desync_
 - Better Search Index
 - Post view
 - Search a User

@@ -1,11 +1,43 @@
 # PyReddit
 
-A Reddit Client written in Python for Terminals
+A Reddit Client in Python for Terminals
+
+!["PyReddit Execution"](/media/PyReddit-1.gif "PyReddit Execution")
+
+# Why?
+
+I created this tool first because I had nothing to do, but most importantly
+because I want to create something unique in my favorite language: [Python](https://python.org)🐍. 
+
+# How to use it?
+
+- Install Python 3.10 or above (to see your python version write on your terminal) 
+    ```python3 --version``` or ```python --version```
+- Download the last [Release](https://github.com/Fr3nkIsHere/PyReddit/releases) or clone this repository
+- To be able to use all the features you need to install [ffmpeg](https://ffmpeg.org/)  
+
+# TODO list
+
+- <del>Search a Subreddit
+- Post time index (for now only globally)
+- <del>Better Video & Sound</del> _NB: yes, i know Video and audio desync_
+- Better Search Index
+- Post view
+- Search a User
+- More personalization
+
 
 ## Credits to:
 
+For the Reddit API requests:
+- [Praw](https://github.com/praw-dev/praw)
+
+For the frontend App:
+- [Rich](https://github.com/Textualize/rich)
+- [Ascii-Magic](https://github.com/LeandroBarone/python-ascii_magic)
+
+For The Multimedia requests:
 - [OpenCv](https://github.com/opencv/opencv-python)
 - [Redvid](https://github.com/elmoiv/redvid)
-- [Rich](https://github.com/Textualize/rich)
-- [Praw](https://github.com/praw-dev/praw)
-- [Ascii-Magic](https://github.com/LeandroBarone/python-ascii_magic)
+- [MoviePy](https://github.com/Zulko/moviepy)
+- [PyGame](https://github.com/pygame/pygame)

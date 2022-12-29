@@ -62,7 +62,7 @@ def get_started():
     time.sleep(0.3)
     Console.print("[spring_green3]Connection with Reddit... ✓[/spring_green3]")
     time.sleep(0.3)
-    Console.print("[spring_green3]Starting PyReddit 0.4... [/spring_green3]")
+    Console.print("[spring_green3]Starting PyReddit 0.34... [/spring_green3]")
     time.sleep(3)
 
 

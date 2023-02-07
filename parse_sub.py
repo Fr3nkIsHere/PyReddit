@@ -9,13 +9,20 @@ The Subreddit Parser
 '''
 from os import system
 import json, time, os, random
-import requests, praw, pyfiglet, ascii_magic
+import requests, praw, pyfiglet, ascii_magic, platform
 from rich import console
 from rich.markdown import Markdown
 import get_multi
 import sys
 
 Console = console.Console()
+
+if platform.system() == 'Windows':
+    CLS = "system(\"cls\")"
+    TEMP = "C:\\Windows\\Temp"
+else:
+    CLS = "system(\"clear\")"
+    TEMP = "/tmp"
 
 reddit= praw.Reddit(client_id="dpCFcO5NCMP4Xa7ZqQP6rA",         
                                 client_secret="eHOQOtGHXfg8xLX9drgIlhQxi5dnHQ",     
@@ -90,7 +97,7 @@ class Subreddit:
                    
 
     def out(title, desc, link, subname, subdesc, video_sett):
-        system("clear")
+        eval(CLS)
         Console.print(f"[dark_orange3]{subname}[/dark_orange3]\n[salmon1]Description: {subdesc}[/salmon1]\n\n",markup=True)
         Console.print(f"[blue3]Title:[/blue3] {title} \n[deep_sky_blue3]Description: [/deep_sky_blue3]")
         Console.print(Markdown(desc))

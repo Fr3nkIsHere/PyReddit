@@ -13,25 +13,44 @@ The main program
 from os import system
 
 #Library Installation
+'''
 try: 
-    import requests, praw, pyfiglet, ascii_magic, redvid, pygame, ffmpeg, moviepy
+    import requests, praw, pyfiglet, ascii_magic, redvid #pygame, ffmpeg, moviepy
 except ModuleNotFoundError:
     with open("requirements.txt", 'w') as file:
         file.write("rich\nrequests\npraw\npyfiglet\nascii_magic\nredvid\nopencv-python\npygame==2.1.3.dev8\nmoviepy\nffmpeg")
     system("pip install -r requirements.txt")
     import requests, praw, pyfiglet, ascii_magic, redvid
-    
-
-import time, os
-from rich import console
-import linecache
-import search, parse_sub
-import sys, platform
+'''  
+import os
+#import search, parse_sub
+import sys
+from typing import Self, Type
 
 
+from stdout import *
 
-from Termy import *
 
+class Main:
+    """
+        The main class of PyReddit
+    """
+    def __init__(self: Self,
+                 argv: list[str] = sys.argv,
+                 argc: int = len(sys.argv)) -> None:
+
+        self.argv: list[str] = argv
+        self.argc: int = argc
+        self.Console: stdout = stdout(OutType=1)
+
+        self.Console.Println("Hello World")
+
+        self.Console.Println(f"\nProgram executed with {self.argc} arguments: {self.argv}")
+
+        
+
+if __name__ == "__main__":
+    Main()
 
 """
 reddit = None               

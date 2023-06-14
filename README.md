@@ -1,3 +1,6 @@
+# Important!
+Because i want to make a good client for Reddit in python, PyReddit will be rewritten in this branch
+
 # PyReddit
 
 A Reddit Client in Python for Terminals

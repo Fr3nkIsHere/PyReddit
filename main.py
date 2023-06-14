@@ -11,9 +11,6 @@ The main program
 
 
 from os import system
-import argparse
-
-parser = argparse.ArgumentParser(prog="PyReddit 0.4")
 
 #Library Installation
 try: 
@@ -30,7 +27,13 @@ from rich import console
 import linecache
 import search, parse_sub
 import sys, platform
- 
+
+
+
+from Termy import *
+
+
+"""
 reddit = None               
 Console = console.Console() #Console Initialitation
 running = True  
@@ -264,4 +267,5 @@ def main():
 
 if __name__ == "__main__":
     main()          #Run the Program
+"""
 

@@ -28,7 +28,7 @@ class Video:
         title = data.title()
         if os.path.exists("last_video.mp4"):
             os.remove("last_video.mp4")
-        os.rename(f"{title}", "last_video.mp4")
+        os.rename(f"{title.lower()}", "last_video.mp4")
         
         vidObj = cv2.VideoCapture("last_video.mp4")
         number_of_frames = int(vidObj.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -106,7 +106,7 @@ class Video:
         for i in range(count):
             image = f"{TEMP}\\images\\frame{i}.jpg"
             ascii_magic.init_terminal()
-            output = ascii_magic.from_image_file(image, columns=144, width_ratio= 3, mode=ascii_magic.Modes.TERMINAL)
+            output = ascii_magic.from_image(image, columns=144, width_ratio= 3, mode=ascii_magic.Modes.TERMINAL)
             print(f"\x1b[{y};0H")
             time.sleep(1/30)
             ascii_magic.to_terminal(output)
@@ -135,7 +135,7 @@ class Image:
         Image.out()
     
     def out():
-        image = ascii_magic.from_image_file('last_pic.jpg')
-        ascii_magic.to_terminal(image)
+        image = ascii_magic.from_image(path='last_pic.jpg')
+        ascii_magic.AsciiArt(image).to_terminal()
 
 

@@ -1,0 +1,36 @@
+Screen {
+    background: #1A1A22;
+}
+RHeader{
+    background: #000000;
+}
+
+Menu{
+    align: center top;
+    padding: 10 76;
+}
+.Title{
+    padding: 0 25;
+    color: #ff4400;
+}
+
+.Search{
+    align: center middle;
+    width: 90;
+}
+
+.Buttons{
+    align: center top;
+    padding: 1;
+}
+
+.ButtonSearch{
+    offset-x: -16;
+    color: #0000FF
+}
+
+.Random{
+    offset-x: 4;
+    background: #ffa500;
+    color: #000000;
+}   

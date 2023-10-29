@@ -1,3 +1,7 @@
+# ATTENTION PLEASE ⚠️
+PyReddit actually is in fase of Rebuilding, everything that is here and not under src is old!
+Please wait for a new major release or use the "legacy" version
+
 # PyReddit
 
 A Reddit Client in Python for Terminals

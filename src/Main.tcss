@@ -1,0 +1,8 @@
+Screen{
+    background: rgb(15, 15, 35);
+}
+
+Header{
+    color: rgb(250, 250, 250);
+    background: rgb(25, 15, 15)
+}

@@ -1,0 +1,6 @@
+ImageViewer {
+    width: auto;
+    height: auto;
+    background: rgb(0,255,20);
+    border: heavy rgb(255,0,255);
+}

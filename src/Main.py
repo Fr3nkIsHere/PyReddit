@@ -82,6 +82,8 @@ class Main(App):
         # TODO: Data Check
 
         # TODO: Widget Check
+        self.imageViewer: ImageViewer = ImageViewer()
+        
         
         # App Execution
         self.title: str = "PyReddit Alpha 0.5 "
@@ -94,10 +96,17 @@ class Main(App):
 
         exit(0)
         return
-    
+
+    def _on_resize(self: Self) -> None:
+        self.imageViewer.resize(self.size.width, self.size.height)
+        #self.devtools.console.print("Sigma")
+
+
     def compose(self: Self) -> ComposeResult:
         yield Header(show_clock=True, id="Header") 
-        yield ImageViewer()
+        
+        # ! Test of the ImageViewer
+        yield self.imageViewer
 
 
 

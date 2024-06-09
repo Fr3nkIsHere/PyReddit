@@ -105,13 +105,14 @@ class ImageViewer(Widget):
 
         self.iwidth: int = self.width    # Image width
         self.iheight: int = self.height  # Image height
+        self.zoom: int = 2               # Zoom factor
 
         # Acquire Image info
         self.imageInfo: ImageInfo = self.acquire()
+
+        self.iheight: int = self.imageInfo.height   # Image height
+        self.iwidth: int = self.imageInfo.width     # Image width
         
-
-    
-
 
     def resize(self: Self, width: int, height: int) -> None:
         """
@@ -128,6 +129,20 @@ class ImageViewer(Widget):
         self.width: int = int(width/3 * 2)
         self.height: int = height - 5
 
+    def _on_mouse_scroll_up(self: Self) -> None:
+        """
+            Zoom in the image
+        """
+        self.zoom: int = self.zoom + 0.2
+        self.refresh()
+
+    def _on_mouse_scroll_down(self: Self) -> None:
+        """
+            Zoom in the image
+        """
+        if self.zoom >= 1:
+            self.zoom: int = self.zoom - 0.2
+        self.refresh()
         
     
     def acquire(self: Self) -> ImageInfo:
@@ -182,7 +197,7 @@ class ImageViewer(Widget):
             Render the Image built
         """
         
-        imageScale: float = self.imageInfo.width / self.imageInfo.height 
+        imageScale: float = self.iwidth / self.iheight 
         widgetScale: float = self.width / self.height
         if imageScale > widgetScale: 
             width: int = self.width
@@ -191,4 +206,5 @@ class ImageViewer(Widget):
             width: int = int(self.height * imageScale)
             height: int= self.height 
         
-        return Pixels.from_image(self.imageInfo.data, resize=(width * 2, height * 2))
+        
+        return Pixels.from_image(self.imageInfo.data, resize=(int(width * self.zoom), int(height * self.zoom)))

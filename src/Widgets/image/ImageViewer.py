@@ -108,6 +108,8 @@ class ImageViewer(Widget):
 
         # Acquire Image info
         self.imageInfo: ImageInfo = self.acquire()
+        
+
     
 
 
@@ -156,15 +158,13 @@ class ImageViewer(Widget):
                 info.height: int = image.height
                 info.size: int = getsize(self.path)
                 info.colors: int = modeToBpp.get(image.mode, 24)
-                info.data: bytes = image
+                info.data: bytes = image.copy()
 
             return info
 
         except IOError:
             exit(20)
         
-
-    
     def get_content_width(self: Self, container: Size, viewport: Size) -> int:
         """
             Obtaint the Widget width
@@ -181,14 +181,14 @@ class ImageViewer(Widget):
         """
             Render the Image built
         """
-        scale: float = 1
-        if(self.imageInfo.width >= self.imageInfo.height):
-            scale: float = self.width / self.imageInfo.width
-            height: int = int(scale * self.imageInfo.height)
+        
+        imageScale: float = self.imageInfo.width / self.imageInfo.height 
+        widgetScale: float = self.width / self.height
+        if imageScale > widgetScale: 
             width: int = self.width
+            height: int= int(self.width / imageScale)
         else:
-            scale: float = self.height / self.imageInfo.height
-            width: int = int(scale * self.imageInfo.width)
-            height: int = self.height
-
-        return Pixels.from_image(self.imageInfo.data, resize=(width, height))
+            width: int = int(self.height * imageScale)
+            height: int= self.height 
+        
+        return Pixels.from_image(self.imageInfo.data, resize=(width * 2, height * 2))

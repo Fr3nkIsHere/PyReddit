@@ -1,7 +1,6 @@
 ImageViewer {
     width: auto;
     height: auto;
-    background: rgb(255,255,20);
-    border: round rgb(50,50,55);
+    border: round rgb(200,200,200);
     content-align: center middle;
 }

@@ -31,6 +31,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Header
 from textual.widgets._header import HeaderClock, HeaderTitle
 from textual.widget import Reactive
+from textual import log
 
 from Widgets.image.ImageViewer import ImageViewer
 
@@ -82,7 +83,7 @@ class Main(App):
         # TODO: Data Check
 
         # TODO: Widget Check
-        self.imageViewer: ImageViewer = ImageViewer()
+        self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
         
         
         # App Execution
@@ -99,16 +100,18 @@ class Main(App):
 
     def _on_resize(self: Self) -> None:
         self.imageViewer.resize(self.size.width, self.size.height)
-        #self.devtools.console.print("Sigma")
-
+        
 
     def compose(self: Self) -> ComposeResult:
         yield Header(show_clock=True, id="Header") 
         
         # ! Test of the ImageViewer
+        log("Main() >>> Loading the ImageViewer Widget!")
         yield self.imageViewer
 
 
 
 if __name__ == "__main__":
-    Main()
+    # ! Test of the Post method
+    print("Hello")
+    #Main()

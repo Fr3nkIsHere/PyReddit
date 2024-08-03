@@ -30,7 +30,10 @@ from os import stat
 from os.path import getsize
 
 from textual.app import App, ComposeResult, RenderResult
+from textual.strip import Strip
 from textual.widget import Widget, Size
+from textual.events import MouseMove
+from textual import log
 
 from PIL import Image
 from rich_pixels import Pixels
@@ -39,6 +42,9 @@ from rich_pixels import Pixels
 class ImageInfo:
     """
         A simple Class to save Information about an Image
+
+        TODO:
+            - Implement a decent Zoom
     """
     def __init__(self: Self,
                  name: str = "name.bmp",
@@ -100,8 +106,10 @@ class ImageViewer(Widget):
         # Setting up some varaiables
         self.path: str = path
 
-        self.width: int = 80        # Some Default values
-        self.height: int = 60       #
+        self.width: int = 80               # Some Default values
+        self.height: int = 60              #
+        self.mouseX: int | None = None     #
+        self.mouseY: int | None = None     #
 
         self.iwidth: int = self.width    # Image width
         self.iheight: int = self.height  # Image height
@@ -129,22 +137,34 @@ class ImageViewer(Widget):
         self.width: int = int(width/3 * 2)
         self.height: int = height - 5
 
-    def _on_mouse_scroll_up(self: Self) -> None:
+    def _on_mouse_scroll_up(self: Self, event: MouseMove) -> None:
         """
             Zoom in the image
         """
+        
+        log(f"ImageViewer()._on_mouse_scroll_up() >>> Debug! X: {self.mouseX} || Y: {self.mouseY}")
+
         self.zoom: int = self.zoom + 0.2
         self.refresh()
 
-    def _on_mouse_scroll_down(self: Self) -> None:
+    def _on_mouse_scroll_down(self: Self, event: MouseMove) -> None:
         """
-            Zoom in the image
+            DeZoom in the image
         """
+
+        log(f"ImageViewer()._on_mouse_scroll_down() >>> Debug! X: {self.mouseX} || Y: {self.mouseY}")
+
         if self.zoom >= 1:
             self.zoom: int = self.zoom - 0.2
         self.refresh()
-        
     
+    def on_mouse_move(self: Self, event: MouseMove) -> None:
+        """
+            Get the mouse position relative to the widget
+        """
+        self.mouseX: int = event.x
+        self.mouseY: int = event.y
+        
     def acquire(self: Self) -> ImageInfo:
         """
             Acquire Image info
@@ -192,7 +212,7 @@ class ImageViewer(Widget):
         """
         return self.height
 
-    def render(self: Self) -> RenderResult:
+    def render(self: Self) -> Strip:
         """
             Render the Image built
         """
@@ -206,5 +226,6 @@ class ImageViewer(Widget):
             width: int = int(self.height * imageScale)
             height: int= self.height 
         
+        pixel: Pixels = Pixels.from_image(self.imageInfo.data, resize=(int(width * self.zoom), int(height * self.zoom)))
         
-        return Pixels.from_image(self.imageInfo.data, resize=(int(width * self.zoom), int(height * self.zoom)))
+        return pixel

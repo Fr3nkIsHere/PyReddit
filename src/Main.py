@@ -26,6 +26,8 @@
 
 from sys import argv, stdout
 from typing import Self, Final
+from os import getenv
+from dotenv import load_dotenv
 
 from textual.app import App, ComposeResult
 from textual.widgets import Header
@@ -33,7 +35,13 @@ from textual.widgets._header import HeaderClock, HeaderTitle
 from textual.widget import Reactive
 from textual import log
 
+from praw import Reddit
+
+# Graphics
 from Widgets.image.ImageViewer import ImageViewer
+
+# Code
+from Code.PyReddit.Login import Login
 
 class Header(Header):
     """
@@ -82,6 +90,14 @@ class Main(App):
 
         # TODO: Data Check
 
+        # Checking the file .env (you need to supply one by yourself under the section Login of the README)
+        if(not load_dotenv(".env")):
+            print("Error: Unable to load the file .env. Make sure i can open it!")
+            exit(1)
+
+        # Check for the Login
+        Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET")) if self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN"))
+        exit(0)
         # TODO: Widget Check
         self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
         
@@ -98,9 +114,16 @@ class Main(App):
         exit(0)
         return
 
+
+    def _is_logged(self: Self) -> bool:
+        """
+            Check if the user is logged or not by checking the Refresh Token
+        """
+        if(getenv("TOKEN") is None): return False
+        return True
+
     def _on_resize(self: Self) -> None:
         self.imageViewer.resize(self.size.width, self.size.height)
-        
 
     def compose(self: Self) -> ComposeResult:
         yield Header(show_clock=True, id="Header") 
@@ -113,5 +136,4 @@ class Main(App):
 
 if __name__ == "__main__":
     # ! Test of the Post method
-    print("Hello")
-    #Main()
+    Main()

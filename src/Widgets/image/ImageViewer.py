@@ -45,6 +45,9 @@ class ImageInfo:
 
         TODO:
             - Implement a decent Zoom
+            - Speed up the Rendering Process
+            - Add more function
+            - Add a "Low performance method"
     """
     def __init__(self: Self,
                  name: str = "name.bmp",

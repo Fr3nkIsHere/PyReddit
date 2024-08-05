@@ -4,4 +4,6 @@ lib/
 lib64
 __pycache__/
 debugImages/
+music/
 pyvenv.cfg
+.env

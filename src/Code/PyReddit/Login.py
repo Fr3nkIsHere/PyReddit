@@ -43,46 +43,71 @@ class Login:
             @Token: str -> The Refresh Token obtained after the first login
     """
     def __init__(self: Self, clientID: str, clientSecret: str, Token: str | None) -> None:
+        
+        if(Token is not None):
+            # Login with the Token
+            self.redditIstance: Reddit = Reddit(
+                client_id=clientID,
+                client_secret=clientSecret,
+                refresh_token=Token,
+                user_agent="PyReddit/0.5"
+            )
+            print(f"PyRedit is now Logged! User: {self.redditIstance.user.me()}.")
+            return
+
+        #Login Without Token
         self.redditIstance: Reddit = Reddit(
             client_id=clientID,
             client_secret=clientSecret,
-            redirect_uri="https://localhost:8080",
+            redirect_uri="http://localhost:8080",
             user_agent="PyReddit/0.5"
         )
 
         STATE: Final[str] = f"pyReddiUniqueStateLoL{randint(9, 4_294_967_296)}"
-        WAITING_MUSIC: Final[str] = "music/waitingAhhMusic.mp3"
 
         # Authorization URL
-        print(f"This is your first time logging in: Please authorize the app using this link -> {self.redditIstance.auth.url(scopes=["*"], state=STATE, duration="permanent")}\n(And in the meantime i'm gonna play some music for the waiting)")
-        
-        waiting: AudioSegment = AudioSegment.from_file(WAITING_MUSIC)
-        raw_data = waiting.raw_data
-        sample_rate = waiting.frame_rate
-        num_channels = waiting.channels
-        bytes_per_sample = waiting.sample_width
-        play_obj = simpleaudio.play_buffer(raw_data, num_channels, bytes_per_sample, sample_rate)
-        
+        print(f"This is your first time logging in: Please authorize the app using this link -> {self.redditIstance.auth.url(scopes=["*"], state=STATE, duration="permanent")}")
 
         # Code obtainer
         #self.token: str = input("!Debug! Inserire Code: ")
-        client = self.createConnection()
-        data = client.recv(1024).decode("utf-8", errors="replace")
-        param_tokens = data.split(" ", 2)[1].split("?", 1)[1].split("&")
-        params = {
+        self.client: socket = self.createConnection()
+        data: str = self.client.recv(8192).decode("utf-8", errors="replace")
+        param_tokens: list[str] = data.split(" ", 2)[1].split("?", 1)[1].split("&")
+        self.params: dict[str: str] = {
             key: value for (key, value) in [token.split("=") for token in param_tokens]
         }
-        print(self.params)
+        
+        # State Check
+        if(self.params.get("state") != STATE):
+            print("Error: the State of the request is not equal to the State of PyReddit!")
+            print("Please Try Again Later!")
+            exit(32)
+        
+        # Error Check
+        if(self.params.get("error") is not None):
+            print(f"Error: an Error during the login happened! The response: {self.params.get("error")}")
+            print("Please Try Again Later!")
+            exit(31)
 
-        # Refresh TOken creator
-       #print(self.redditIstance.auth.authorize(self.token))
-        #print(self.redditIstance.user.me())
-        # Fermare la riproduzione
-        play_obj.stop()
+        # Code Check
+        self.refreshToken: str = self.redditIstance.auth.authorize(self.params.get("code"))
+        print(f"PyRedit is now Logged! User: {self.redditIstance.user.me()}.")
+        self.sendMessage()
+
+        # Saving the Token
+        with open(".env", "a") as file:
+            file.write(f"\nTOKEN={self.refreshToken}")
 
         return
 
-    
+    def getIstance(self: Self) -> Reddit:
+        """
+            Return the Reddit Istance after the Login
+            Return:
+                Reddit -> The Reddit Istance after the login
+        """
+        return self.redditIstance
+
     def createConnection(self: Self) -> socket:
         """Wait for and then return a connected socket..
 
@@ -94,12 +119,45 @@ class Login:
         server.bind(("localhost", 8080))
         server.listen(1)
         client: socket = server.accept()[0]
-        server.close()
         return client
 
 
-    def send_message(client, message):
+    def sendMessage(self:Self) -> None:
         """Send message to client and close the connection."""
-        print(message)
-        client.send(f"HTTP/1.1 200 OK\r\n\r\n{message}".encode("utf-8"))
-        client.close()
+        html: str = """
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>PyReddit - Login</title>
+            <style>
+                /* Imposta il corpo della pagina per usare Flexbox */
+                body {
+                    display: flex;
+                    justify-content: center; /* Centra orizzontalmente */
+                    align-items: center;     /* Centra verticalmente */
+                    height: 100vh;           /* Altezza viewport per la centratura verticale */
+                    margin: 0;               /* Rimuove i margini predefiniti del body */
+                    font-family: Arial, sans-serif; /* Imposta il font del testo */
+                    background-color: #f0f0f0; /* Colore di sfondo per contrastare il testo */
+                }
+
+                /* Stile per l'elemento h1 */
+                h1 {
+                    font-size: 2em;          /* Dimensione del testo */
+                    color: #333;             /* Colore del testo */
+                    text-align: center;      /* Allineamento del testo */
+                }
+            </style>
+        </head>
+        <body>
+            <h1>You can now close this Page.</h1>
+        </body>
+        </html>
+        """
+        self.client.send(f"HTTP/1.1 200 OK\r\nContent-Type: text/html\r\nContent-Length: {len(html)}\r\n\r\n{html}".encode("utf-8"))
+        self.client.close()
+        return
+
+

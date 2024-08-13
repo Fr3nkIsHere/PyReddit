@@ -46,14 +46,25 @@ class Login:
         
         if(Token is not None):
             # Login with the Token
-            self.redditIstance: Reddit = Reddit(
-                client_id=clientID,
-                client_secret=clientSecret,
-                refresh_token=Token,
-                user_agent="PyReddit/0.5"
-            )
-            print(f"PyRedit is now Logged! User: {self.redditIstance.user.me()}.")
-            return
+            try:
+                self.redditIstance: Reddit = Reddit(
+                    client_id=clientID,
+                    client_secret=clientSecret,
+                    refresh_token=Token,
+                    user_agent="PyReddit/0.5"
+                )
+                print(f"PyRedit is now Logged! User: {self.redditIstance.user.me()}.")
+                return
+            except:
+                print("Not a valid Token, re-authenticating...")
+
+                # First of all: Deleting the old Token
+                with open(".env", 'r') as file:
+                    lines: list[str] = file.readlines()
+                with open(".env", 'w') as file:
+                    for line in lines:
+                        if not line.startswith(f"TOKEN="):
+                            file.write(line)
 
         #Login Without Token
         self.redditIstance: Reddit = Reddit(

@@ -39,9 +39,11 @@ from praw import Reddit
 
 # Graphics
 from Widgets.image.ImageViewer import ImageViewer
+from Code.Subreddit.Post.Post import PostViewer
 
 # Code
 from Code.PyReddit.Login import Login
+from Code.Subreddit.Post.Post import PostFetcher
 
 class Header(Header):
     """
@@ -96,10 +98,11 @@ class Main(App):
             exit(1)
 
         # Check for the Login
-        #self.redditIstance: Reddit = Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=None).getIstance() if not self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN")).getIstance()
-        
+        self.redditIstance: Reddit = Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=None).getIstance() if not self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN")).getIstance()
+        fetch: PostFetcher = PostFetcher(self.redditIstance.submission(id="1jni1s3"))
+
         # TODO: Widget Check
-        self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
+        #self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
         
         
         # App Execution
@@ -129,8 +132,11 @@ class Main(App):
         yield Header(show_clock=True, id="Header") 
         
         # ! Test of the ImageViewer
-        log("Main() >>> Loading the ImageViewer Widget!")
-        yield self.imageViewer
+        #log("Main() >>> Loading the ImageViewer Widget!")
+        #yield self.imageViewer
+
+        # ! Test of the PostViewer
+        log("Main() >>> Loading the PostViewer Screen!")
 
 
 

@@ -220,7 +220,7 @@ class ImageViewer(Widget):
 
     def render(self: Self) -> Strip:
         """
-            Render the Image built
+            Render the image, resizing it
         """
 
         orig_width, orig_height = self.imageInfo.width, self.imageInfo.height

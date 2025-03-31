@@ -96,7 +96,8 @@ class Main(App):
             exit(1)
 
         # Check for the Login
-        self.redditIstance: Reddit = Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET")).getIstance() if not self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN")).getIstance()
+        #self.redditIstance: Reddit = Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=None).getIstance() if not self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN")).getIstance()
+        
         # TODO: Widget Check
         self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
         

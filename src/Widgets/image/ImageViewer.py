@@ -38,6 +38,8 @@ from textual import log
 from PIL import Image
 from rich_pixels import Pixels
 
+from rich.align import Align
+
 
 class ImageInfo:
     """
@@ -111,12 +113,13 @@ class ImageViewer(Widget):
 
         self.width: int = 80               # Some Default values
         self.height: int = 60              #
-        self.mouseX: int | None = None     #
-        self.mouseY: int | None = None     #
+        self.mouseX: int | None = 0        #
+        self.mouseY: int | None = 0        #
 
-        self.iwidth: int = self.width    # Image width
-        self.iheight: int = self.height  # Image height
-        self.zoom: int = 2               # Zoom factor
+        self.iwidth: int = self.width           # Image width
+        self.iheight: int = self.height         # Image height
+        self.zoom: int = 2                      # Zoom factor
+        self.origin: Tuple[int, int] = (0, 0)   # Image origin
 
         # Acquire Image info
         self.imageInfo: ImageInfo = self.acquire()
@@ -219,16 +222,28 @@ class ImageViewer(Widget):
         """
             Render the Image built
         """
-        
-        imageScale: float = self.iwidth / self.iheight 
-        widgetScale: float = self.width / self.height
-        if imageScale > widgetScale: 
-            width: int = self.width
-            height: int= int(self.width / imageScale)
+
+        orig_width, orig_height = self.imageInfo.width, self.imageInfo.height
+        widget_width, widget_height = self.size.width, self.size.height
+
+        max_scale = min(widget_width / orig_width, widget_height / orig_height)
+        scale_factor = max(self.zoom, max_scale)
+
+        new_width = int(orig_width * scale_factor)
+        new_height = int(orig_height * scale_factor)
+
+        if(new_width >= new_height):
+            missing: int = self.size.width - new_width
+            new_width += missing
+            aspect_ratio = new_width / new_height
+            new_height = int((orig_height * new_width) / orig_width)
         else:
-            width: int = int(self.height * imageScale)
-            height: int= self.height 
-        
-        pixel: Pixels = Pixels.from_image(self.imageInfo.data, resize=(int(width * self.zoom), int(height * self.zoom)))
-        
+            missing: int = self.size.height - new_height
+            new_height += missing
+            aspect_ratio = new_height / new_width
+            new_height *= 2
+            new_width = int((orig_width * new_height) / orig_height)
+
+        pixel = Pixels.from_image(self.imageInfo.data, resize=(new_width, new_height))
         return pixel
+

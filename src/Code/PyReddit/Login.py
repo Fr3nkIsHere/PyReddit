@@ -29,8 +29,8 @@ from praw import Reddit
 from socket import socket, AF_INET, SOCK_STREAM, SOL_SOCKET, SO_REUSEADDR
 from random import randint
 
-from pydub import AudioSegment
-import simpleaudio
+#from pydub import AudioSegment
+#import simpleaudio
 
 class Login:
     """

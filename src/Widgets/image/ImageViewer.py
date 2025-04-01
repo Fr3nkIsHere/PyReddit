@@ -33,6 +33,8 @@ from textual.app import App, ComposeResult, RenderResult
 from textual.strip import Strip
 from textual.widget import Widget, Size
 from textual.events import MouseMove
+from textual.geometry import Size
+from textual.scroll_view import ScrollView
 from textual import log
 
 from PIL import Image
@@ -83,7 +85,7 @@ class ImageInfo:
         self.data: Image = data
 
 
-class ImageViewer(Widget):
+class ImageViewer(ScrollView):
     """
         This is A Widget to display an image with Textual & Rich Pixels
     """
@@ -126,6 +128,8 @@ class ImageViewer(Widget):
 
         self.iheight: int = self.imageInfo.height   # Image height
         self.iwidth: int = self.imageInfo.width     # Image width
+
+        self.virtualSize: Size = Size(self.iwidth, self.iheight)   # Virtual Size
         
 
     def resize(self: Self, width: int, height: int) -> None:
@@ -223,11 +227,13 @@ class ImageViewer(Widget):
             Render the image, resizing it
         """
 
+        scroll_x, scroll_y = self.scroll_offset # current scroll position
+
         orig_width, orig_height = self.imageInfo.width, self.imageInfo.height
         widget_width, widget_height = self.size.width, self.size.height
 
-        max_scale = min(widget_width / orig_width, widget_height / orig_height)
-        scale_factor = max(self.zoom, max_scale)
+        scale_factor = min(widget_width / orig_width, widget_height / orig_height)
+
 
         new_width = int(orig_width * scale_factor)
         new_height = int(orig_height * scale_factor)
@@ -236,14 +242,13 @@ class ImageViewer(Widget):
             missing: int = self.size.width - new_width
             new_width += missing
             aspect_ratio = new_width / new_height
-            new_height = int((orig_height * new_width) / orig_width)
+            new_height = int((orig_height * new_width) / orig_width) 
         else:
             missing: int = self.size.height - new_height
             new_height += missing
-            aspect_ratio = new_height / new_width
-            new_height *= 2
-            new_width = int((orig_width * new_height) / orig_height)
+            new_height *= 2 
+            new_width = int((orig_width * new_height) / orig_height) 
 
-        pixel = Pixels.from_image(self.imageInfo.data, resize=(new_width, new_height))
+        pixel: Pixels = Pixels.from_image(self.imageInfo.data, resize=(new_width, new_height))
         return pixel
 

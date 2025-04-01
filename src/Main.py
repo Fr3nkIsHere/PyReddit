@@ -39,39 +39,13 @@ from praw import Reddit
 
 # Graphics
 from Widgets.image.ImageViewer import ImageViewer
+from Widgets.Header import Header
 from Code.Subreddit.Post.Post import PostViewer
 
 # Code
 from Code.PyReddit.Login import Login
 from Code.Subreddit.Post.Post import PostFetcher
 
-class Header(Header):
-    """
-        An Header replacement of the textual.widgets.Header implementation of an Header
-    """
-
-    def __init__(self: Self, 
-                show_clock: bool = False,
-                name: str | None = None,
-                id: str | None = None,
-                classes: str | None = None) -> None:
-        """Initialise the header widget.
-
-        Args:
-            @show_clock: ``True`` if the clock should be shown on the right of the header.
-            @name: The name of the header widget.
-            @id: The ID of the header widget in the DOM.
-            @classes: The CSS classes of the header widget.
-        """
-        super().__init__(show_clock=show_clock, name=name, id=id, classes=classes)
-
-    def compose(self: Self) -> ComposeResult:
-        yield HeaderTitle()
-        yield HeaderClock() if self._show_clock else HeaderClockSpace()
-        
-    
-    def _on_click(self: Self) -> None:
-        return
 
 class Main(App):
     """
@@ -81,6 +55,8 @@ class Main(App):
 
     # Setting the CSS
     CSS_PATH: Final[str] = "Main.tcss"
+    SCREENS = {"seePost": PostViewer}
+    BINDINGS = [("p", "showPost", "Post")]
 
     def __init__(self: Self, 
                  argv: list[str] = argv) -> None:
@@ -99,7 +75,6 @@ class Main(App):
 
         # Check for the Login
         self.redditIstance: Reddit = Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=None).getIstance() if not self._is_logged() else Login(clientID=getenv("CLIENT_ID"), clientSecret=getenv("CLIENT_SECRET"), Token=getenv("TOKEN")).getIstance()
-        fetch: PostFetcher = PostFetcher(self.redditIstance.submission(id="1jni1s3"))
 
         # TODO: Widget Check
         #self.imageViewer: ImageViewer = ImageViewer(path="debugImages/Test.bmp")
@@ -126,9 +101,14 @@ class Main(App):
         return True
 
     def _on_resize(self: Self) -> None:
-        self.imageViewer.resize(self.size.width, self.size.height)
+        #self.imageViewer.resize(self.size.width, self.size.height)
+        ...
+
+    def action_showPost(self: Self) -> None:
+        self.push_screen(PostViewer(PostFetcher(self.redditIstance.submission(id="1jni1s3"))))
 
     def compose(self: Self) -> ComposeResult:
+        log("Header() >>> Loading the Header Widget!")
         yield Header(show_clock=True, id="Header") 
         
         # ! Test of the ImageViewer

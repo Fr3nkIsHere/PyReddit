@@ -86,7 +86,6 @@ class Main(App):
         self.id: str = "Main"
         stdout.write(f"\x1b]2;{self.title}-{self.sub_title}\x07")
         stdout.flush()
-
         self.run()
 
         exit(0)

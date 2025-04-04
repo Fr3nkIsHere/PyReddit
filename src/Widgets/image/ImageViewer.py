@@ -40,8 +40,6 @@ from textual import log
 from PIL import Image
 from rich_pixels import Pixels
 
-from rich.align import Align
-
 
 class ImageInfo:
     """
